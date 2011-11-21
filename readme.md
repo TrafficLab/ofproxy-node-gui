@@ -4,7 +4,26 @@ A browser-based frontend for Ofproxy-node.
 
 ## Dependencies
 
-oproxy-node (https://github.com/TrafficLab/ofproxy-node)
+oflib-node (https://github.com/TrafficLab/oflib-node/)
+
+oproxy-node (https://github.com/TrafficLab/ofproxy-node/)
+
+node-static (https://github.com/cloudhead/node-static/)
+
+socket-io (https://github.com/LearnBoost/socket.io/)
+
+### Transitive dependencies
+
+buffertools (https://github.com/bnoordhuis/node-buffertools/)
+
+node-int64 (https://github.com/broofa/node-int64/)
+
+node-uuid (https://github.com/broofa/node-uuid/)
+
+socket.io-client (https://github.com/LearnBoost/socket.io-client/)
+
+uglify-js (https://github.com/mishoo/UglifyJS/)
+
 
 ## Usage
 
