@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>OpenFlow proxy</title>
+<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="/css/lib/layout-default-latest.css" type="text/css"/>
+<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+<script type="text/javascript" src="/js/lib/json2.js"></script>
+<script type="text/javascript" src="/js/lib/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="/js/lib/jquery-ui-latest.js"></script>
+<script type="text/javascript" src="/js/lib/jquery.layout-latest.js"></script>
+<script type="text/javascript" src="/js/lib/jquery.stickyscroll.js"></script>
+<script type="text/javascript" src="/js/lib/underscore-min.js"></script>
+<script type="text/javascript" src="/js/lib/backbone-min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/js/layout.js"></script>
+<script type="text/javascript" src="/js/model.js"></script>
+<script type="text/javascript" src="/js/view.js"></script>
+<script type="text/javascript" src="/js/ofproxy.js"></script>
+
+</head>
+<body>
+    <h1>OpenFlow Proxy</h1>
+    <div id="container">
+        <div id="control-pane" class="pane">
+            <div id="connection" class="disconnected">
+                Disconnected
+            </div>
+            <div id="status" class="stopped">
+                Stopped
+            </div>
+        </div>
+        <div id="events-pane" class="pane">
+            <h2>Events</h2>
+            <ul id="events-list">
+                <li id="events-list-header" class="message">
+                    <div class="header">
+                        <div class="session">Session</div>
+                        <div class="time">Time</div>
+                        <div class="sender">Sender</div>
+                        <div class="type">Message type</div>
+                        <div class="xid">XID</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="selectors-pane" class="pane">
+            <div id="sessions-pane" class="pane">
+                <h2>Sessions</h2>
+                <ul id="sessions-list"></ul>
+            </div>
+            <div id="types-pane" class="pane">
+                <h2>Types</h2>
+                <ul id="types-list"></ul>
+            </div>
+        </div>
+
+    </div>
+
+    <img id="logo" src="/img/ericsson_logo.png" />
+</body>
+
+<script type="text/template" id="message-template">
+    <div class="header">
+        <div class="session"><% if (session) { %><%= session.get('name') %><% } %></div>
+        <div class="time"><%= at %></div>
+        <div class="sender"><% if (by == 'controller') { %>Ctrl<% } else { %>Sw<% } %></div>
+        <div class="type">
+            <%= message.header.type.replace('OFPT_', '') %>
+            <% if (message.body && Object.keys(message.body).length > 0) { %>
+                <span class="body">(body)</span>
+            <% } %>
+        </div>
+        <div class="xid"><%= message.header.xid %></div>
+    </div>
+    <% if (message.body && Object.keys(message.body).length > 0) { %>
+    <div class="body">
+        <pre><%= JSON.stringify(message.body, null, 2) %></pre>
+    </div>
+    <% } %>
+</script>
+
+<script type="text/template" id="session-template">
+    <div class="name"><%= name %></div>
+    <div class="filter">
+        <% if(show) { %>
+            <input class="show" type="checkbox" checked="yes"/>
+        <% } else { %>
+            <input class="show" type="checkbox" />
+        <% } %>
+    </div>
+    <div class="address"><%= address %>:<%= port %></div>
+    <div class="delete">
+        <img src="/img/delete.png" />
+    </div>
+</script>
+
+<script type="text/template" id="session-event-template">
+    <div class="header">
+        <div class="session"><% if (session) { %><%= session.get('name') %><% } %></div>
+        <div class="time"><%= at %></div>
+        <div class="event"><% if (type == "start") { %>
+                switch has joined
+            <% } else { %>
+                switch has left
+            <% } %>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="type-template">
+    <div class="name"><%= name.replace('OFPT_', '') %></div>
+    <div class="filter">
+        <% if(show) { %>
+            <input class="show" type="checkbox" checked="yes"/>
+        <% } else { %>
+            <input class="show" type="checkbox" />
+        <% } %>
+    </div>
+</script>
