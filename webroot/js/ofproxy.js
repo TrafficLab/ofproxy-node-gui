@@ -8,7 +8,7 @@ $(document).ready(function() {
                                 });
     };
 
-    function dateFormat(str) {
+    function dateFormat(d) {
         function pad2(n) {
             if (n > 9) {
                 return "" + n;
@@ -27,7 +27,6 @@ $(document).ready(function() {
             }
         };
 
-        var d = new Date(str);
         return d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate()) + ' '
              + pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds()) + "." + pad3(d.getMilliseconds());
     }
@@ -98,10 +97,9 @@ $(document).ready(function() {
         });
     });
 
-    socket.on('ofProxySessions', function(json) {
+    socket.on('ofProxySessions', function(obj) {
         status.set({'state': 'started'});
-        var obj = parse(json);
-        obj.forEach(function(o) {
+        _.each(obj, function(o) {
             sessions.add(new Session({
                     id: o.id,
                     address: o.address,
@@ -111,8 +109,7 @@ $(document).ready(function() {
         });
     });
 
-    socket.on('ofProxySessionStart', function(json) {
-        var obj = parse(json);
+    socket.on('ofProxySessionStart', function(obj) {
         sessions.add(new Session({
                 id: obj.id,
                 address: obj.address,
@@ -121,48 +118,43 @@ $(document).ready(function() {
 
         sessionEvents.add(new SessionEvent({
                     session_id : obj.id,
-                    at : dateFormat(obj.at),
+                    at : dateFormat(new Date(obj.at)),
                     type : "start"
         }));
 
     });
 
-    socket.on('ofProxySessionEnd', function(json) {
-        var obj = parse(json);
+    socket.on('ofProxySessionEnd', function(obj) {
         sessions.update(obj.id, {'active' : false});
 
         sessionEvents.add(new SessionEvent({
                     session_id : obj.id,
-                    at : dateFormat(obj.at),
+                    at : dateFormat(new Date(obj.at)),
                     type : "end"
         }));
     });
 
-    socket.on('ofProxySessionUpdate', function(json) {
-        var obj = parse(json);
-        sessions.update(obj.id, {'dpid' : obj.dpid});
+    socket.on('ofProxySessionUpdate', function(obj) {
+        if ('dpid' in obj) {
+            sessions.update(obj.id, {'dpid' : obj.dpid});
+        }
     });
 
 
 
-    socket.on('ofProxyMessage', function(json) {
-        var obj = parse(json);
+    socket.on('ofProxyMessage', function(obj) {
 
         messages.add(new Message({
                     session_id : obj.id,
-                    at : dateFormat(obj.at),
+                    at : dateFormat(new Date(obj.at)),
                     by : obj.by,
-                    message : obj.message
+                    message : parse(obj.message)
         }));
 
     });
 
     socket.on('ofProxyError', function(json) {
-        var obj = parse(json);
     });
-
-
-
 
     types.add(new Type({name: 'OFPT_HELLO', show: true}));
     types.add(new Type({name: 'OFPT_ERROR', show: true}));

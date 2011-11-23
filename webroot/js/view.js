@@ -62,6 +62,7 @@ window.SessionView = Backbone.View.extend({
     }
 });
 
+
 window.SessionsView = Backbone.View.extend({
     el: $('#sessions-pane'),
     events: {
@@ -86,8 +87,6 @@ window.SessionsView = Backbone.View.extend({
     }
 });
 
-
-
 window.MessageView = Backbone.View.extend({
     tagName: "li",
     className: "message",
@@ -105,16 +104,13 @@ window.MessageView = Backbone.View.extend({
         }
     },
     render: function() {
-
         $(this.el).html(this.template(this.model.toJSON())).appendTo('#events-list');
-        if (this.model.get('message').body && Object.keys(this.model.get('message').body).length > 0) {
+        if (this.model.get('message').body && _.keys(this.model.get('message').body).length > 0) {
             var self = this;
             $(this.el).click(function() {
                                 $(self.el).find('div.body').toggle(200);
                             });
         }
-
-
         return this;
     },
 
@@ -133,7 +129,7 @@ window.MessageView = Backbone.View.extend({
 
     remove: function() {
         $(this.el).remove();
-    },
+    }
 });
 
 
@@ -298,7 +294,7 @@ window.ConnectionView = Backbone.View.extend({
                       .text('Disconnected');
         }
     }
-})
+});
 
 window.StatusView = Backbone.View.extend({
     el: $('#status'),

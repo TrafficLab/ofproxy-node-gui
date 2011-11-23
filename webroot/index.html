@@ -6,18 +6,26 @@
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="/css/lib/layout-default-latest.css" type="text/css"/>
 <link rel="stylesheet" href="/css/style.css" type="text/css"/>
-<script type="text/javascript" src="/js/lib/json2.js"></script>
-<script type="text/javascript" src="/js/lib/jquery-1.7.min.js"></script>
-<script type="text/javascript" src="/js/lib/jquery-ui-latest.js"></script>
-<script type="text/javascript" src="/js/lib/jquery.layout-latest.js"></script>
-<script type="text/javascript" src="/js/lib/jquery.stickyscroll.js"></script>
-<script type="text/javascript" src="/js/lib/underscore-min.js"></script>
-<script type="text/javascript" src="/js/lib/backbone-min.js"></script>
-<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="/js/layout.js"></script>
-<script type="text/javascript" src="/js/model.js"></script>
-<script type="text/javascript" src="/js/view.js"></script>
-<script type="text/javascript" src="/js/ofproxy.js"></script>
+<script type="text/javascript" src="/js/lib/LAB.min.js"></script>
+<script type="text/javascript">
+    $LAB.script(typeof JSON == 'undefined' ? '/js/lib/json2.js' : false)
+        .script('/js/lib/jquery-1.7.min.js')
+        .wait()
+        .script('/js/lib/jquery-ui-latest.js')
+        .wait()
+        .script('/js/lib/jquery.layout-latest.js')
+        .script('/js/lib/underscore-min.js')
+        .wait()
+        .script('/js/lib/backbone-min.js')
+        .script('/socket.io/socket.io.js')
+        .wait()
+        .script('/js/layout.js')
+        .script('/js/model.js')
+        .wait()
+        .script('/js/view.js')
+        .wait()
+        .script('/js/ofproxy.js')
+</script>
 
 </head>
 <body>
@@ -68,13 +76,13 @@
         <div class="sender"><% if (by == 'controller') { %>Ctrl<% } else { %>Sw<% } %></div>
         <div class="type">
             <%= message.header.type.replace('OFPT_', '') %>
-            <% if (message.body && Object.keys(message.body).length > 0) { %>
+            <% if (message.body && _.keys(message.body).length > 0) { %>
                 <span class="body">(body)</span>
             <% } %>
         </div>
         <div class="xid"><%= message.header.xid %></div>
     </div>
-    <% if (message.body && Object.keys(message.body).length > 0) { %>
+    <% if (message.body && _.keys(message.body).length > 0) { %>
     <div class="body">
         <pre><%= JSON.stringify(message.body, null, 2) %></pre>
     </div>
