@@ -89,7 +89,7 @@ window.SessionEvents = Backbone.Collection.extend({
     deleteSession: function(session) {
         var self = this;
         var models = this.models.slice(0);
-        models.forEach(function(msg) {
+        _.each(models, function(msg) {
                 if (msg.get('session') == session) {
                     self.remove(msg);
                 }
@@ -123,7 +123,7 @@ window.Messages = Backbone.Collection.extend({
     deleteSession: function(session) {
         var self = this;
         var models = this.models.slice(0);
-        models.forEach(function(msg) {
+        _.each(models, function(msg) {
                 if (msg.get('session') == session) {
                     self.remove(msg);
                 }

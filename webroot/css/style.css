@@ -165,6 +165,7 @@ h1 {
     display: block;
     width: 800px;
     margin: 0 auto;
+    padding: 0;
 }
 
 #events-list li.message:after {
@@ -275,6 +276,11 @@ h1 {
     overflow-x: auto;
     display: none;
     background-color: #deeef7;
+}
+
+#events-list li.message div.body pre {
+    padding: 0;
+    margin: 0 5px;
 }
 
 #events-list-header div.header {
