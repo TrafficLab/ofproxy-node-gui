@@ -14,10 +14,6 @@ socket-io (https://github.com/LearnBoost/socket.io/)
 
 ### Transitive dependencies
 
-buffertools (https://github.com/bnoordhuis/node-buffertools/)
-
-node-int64 (https://github.com/broofa/node-int64/)
-
 node-uuid (https://github.com/broofa/node-uuid/)
 
 socket.io-client (https://github.com/LearnBoost/socket.io-client/)
