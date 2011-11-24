@@ -14,8 +14,6 @@ socket-io (https://github.com/LearnBoost/socket.io/)
 
 ### Transitive dependencies
 
-node-uuid (https://github.com/broofa/node-uuid/)
-
 socket.io-client (https://github.com/LearnBoost/socket.io-client/)
 
 uglify-js (https://github.com/mishoo/UglifyJS/)
