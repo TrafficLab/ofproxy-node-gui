@@ -80,6 +80,9 @@
             <% if (message.body && _.keys(message.body).length > 0) { %>
                 <span class="body">(body)</span>
             <% } %>
+            <% if (message.warn) { %>
+                <span class="warn">(warn)</span>
+            <% } %>
         </div>
         <div class="xid"><%= message.header.xid %></div>
     </div>
